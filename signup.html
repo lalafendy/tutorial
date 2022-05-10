@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ 	<head>
+ 		<title>Serialize Form</title>
+ 	</head>
+ 	<body>
+ 		<form id="form" method="post">
+            <label for="fullname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="fullname" required>
+        
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+        
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Enter email" name="email" required>
+        
+
+			<button>Submit</button>
+ 		</form>
+ 	</body>
+</html>
+<script>
+  
+   var form = document.querySelector('form');
+   var formData = new FormData(form);
+
+	document.addEventListener('submit', function (event) {
+
+		event.preventDefault();
+		let url = 'http://127.0.0.1:8000/user/signup';
+
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(Object.fromEntries(new FormData(event.target))),
+			headers: {
+					'Content-type': 'application/json;'
+			}
+		}).then(function (response) {
+				if (response.ok) {
+					return response.json();
+					console.log(response);
+					
+				}
+			return Promise.reject(response);
+		}).then(function (formData) {
+			console.log(formData);
+		}).catch(function (error) {
+			console.warn(error);
+		});
+
+	});
+
+	
+
+</script>

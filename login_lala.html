@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+	
+ 	<head>
+ 		<title>Serialize Form</title>
+ 	</head>
+ 	<body>
+ 		<form id="form" method="post">
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Enter email" name="email" required>
+        
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+			<button>Submit</button>
+ 		</form>
+ 	</body>
+</html>
+<script>
+  
+   var form = document.querySelector('form');
+   var formData = new FormData(form);
+
+	document.addEventListener('submit', function (event) {
+
+		event.preventDefault();
+		let url = 'http://127.0.0.1:8000/user/login';
+
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(Object.fromEntries(new FormData(event.target))),
+			headers: {
+					'Content-type': 'application/json;'
+			}
+		}).then(function (response) {
+				if (response.ok) {
+					return response.json();
+					var token = response[Object.keys(response)[0]]
+					console.log(token)
+					//localStorage.setItem('token', token);
+					//self.location = "add.html?t=" + token;
+					//self.location = "add.html";
+				}
+			return Promise.reject(response);
+		}).then(function (formData) {
+			console.log(formData);
+		}).catch(function (error) {
+			console.warn(error);
+		});
+
+	});
+
+	
+
+</script> 
+<!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script>
+		function signin(){
+			var settings = {
+				"url": "http://127.0.0.1:8000/user/login",
+				"method": "POST",
+				"timeout": 0,
+				"headers": {
+					"Content-Type": "application/json"
+				},
+				"data": JSON.stringify({
+					"email": $("#email").val(),
+					"password": $("#password").val()
+				}),
+			};
+
+			$.ajax(settings).done(function (response) {
+				console.log(response);
+				var token = response[Object.keys(response)[0]];
+				console.log(token);
+				localStorage.setItem('token', token);
+				//self.location = "add.html?t=" + token;
+				//self.location = "add.html";
+			});
+		}
+
+		$(function() {
+			$('form.login').on('submit', function(e) {
+				e.preventDefault();
+				signin();
+			});
+		});
+</script> -->
